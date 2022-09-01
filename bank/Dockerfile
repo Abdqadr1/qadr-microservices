@@ -1,7 +1,7 @@
 FROM openjdk:17.0-jdk as build
 
-MAINTAINER abd_qadr
+MAINTAINER abdqadr
 
-COPY target/bank-1.0.jar bank-1.0.jar
+COPY target/bank.jar bank.jar
 
-ENTRYPOINT ["java", "-jar", "bank-1.0.jar"]
+ENTRYPOINT ["java", "-jar", "bank.jar"]

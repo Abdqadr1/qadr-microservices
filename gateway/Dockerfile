@@ -1,7 +1,7 @@
 FROM openjdk:17.0-jdk as build
 
-MAINTAINER abd_qadr
+MAINTAINER abdqadr
 
-COPY target/gateway-1.0.jar gateway-1.0.jar
+COPY target/gateway.jar gateway.jar
 
-ENTRYPOINT ["java", "-jar", "gateway-1.0.jar"]
+ENTRYPOINT ["java", "-jar", "gateway.jar"]

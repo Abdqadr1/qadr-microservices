@@ -1,7 +1,7 @@
 FROM openjdk:17.0-jdk as build
 
-MAINTAINER abd_qadr
+MAINTAINER abdqadr
 
-COPY target/country-1.0.jar country-1.0.jar
+COPY target/country.jar country.jar
 
-ENTRYPOINT ["java", "-jar", "country-1.0.jar"]
+ENTRYPOINT ["java", "-jar", "country.jar"]
