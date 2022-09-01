@@ -1,4 +1,4 @@
-package com.qadr.gateway.config;
+package com.qadr.gateway.security;
 
 
 import org.springframework.context.annotation.Bean;
@@ -14,11 +14,11 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
         http.authorizeExchange(exchange ->
-                        exchange.pathMatchers(
-                                "/api/bank/admin/**",
-                                        "/api/country/admin/**"
-                                ).hasRole("QADR")
-//                                .pathMatchers("/c/**").authenticated()
+                        exchange
+//                        .pathMatchers(
+//                                "/api/bank/admin/**",
+//                                        "/api/country/admin/**"
+//                                ).authenticated()
                                 .pathMatchers("/api/**").permitAll());
 //                .oauth2ResourceServer().jwt();
         http.csrf().disable();

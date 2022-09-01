@@ -1,16 +1,20 @@
 server:
   port: 8000
+  error:
+    include-message: always
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/clients
+      username: root
+      password: root
+  zipkin:
+    baseUrl: http://localhost:9411/
   cloud:
     gateway:
       httpclient:
         connect-timeout: 10000
         response-timeout: 5s
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8080/realms/master/protocol/openid-connect/certs
   application:
     name: gateway
 management:
