@@ -1,0 +1,36 @@
+server:
+  port: 8000
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 10000
+        response-timeout: 5s
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/master/protocol/openid-connect/certs
+  application:
+    name: gateway
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+logging:
+  level:
+    com:
+      netflix:
+        eureka: OFF
+        discovery: OFF
+info:
+  appName: gateway to microservices network
+  version: 1.0
