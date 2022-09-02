@@ -1,5 +1,7 @@
 package com.qadr.gateway.error;
 
+import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +11,14 @@ import java.util.Map;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
+
+    /**
+     * Needed for router function exception handling
+     * */
+    @Bean
+    public WebProperties.Resources webProperties(){
+        return new WebProperties.Resources();
+    }
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Map<String, ?>> handler(CustomException exception){
