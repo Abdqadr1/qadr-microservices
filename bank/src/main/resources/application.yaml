@@ -1,6 +1,8 @@
 server:
   port: 8082
 spring:
+  zipkin:
+    baseUrl: http://localhost:9411/
   application:
     name: bank
   datasource:
@@ -30,6 +32,8 @@ feign:
       enabled: true
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
 logging:

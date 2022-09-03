@@ -17,6 +17,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class RouteHandler  {
@@ -76,5 +77,12 @@ public class RouteHandler  {
                 .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
         return clientService.findByName(name)
                 .flatMap(ServerResponse.ok()::bodyValue);
+    }
+
+    public Mono<ServerResponse> deleteClient(ServerRequest request) {
+        String id = Optional.of(request.pathVariable("id"))
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
+        return clientService.deleteClientById(id)
+                .then(ServerResponse.ok().build());
     }
 }

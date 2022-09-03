@@ -1,9 +1,11 @@
 package com.qadr.gateway.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.qadr.gateway.error.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,7 +42,6 @@ public class SecurityRepository implements ServerSecurityContextRepository {
     @Override
     public Mono load(ServerWebExchange swe) {
         ServerHttpRequest request = swe.getRequest();
-        System.out.println(request.getPath());
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         String accessToken = null;
         if (authHeader != null && authHeader.startsWith(TOKEN_PREFIX)) {
@@ -60,9 +61,7 @@ public class SecurityRepository implements ServerSecurityContextRepository {
                 return this.authenticationManager.authenticate(auth).map(SecurityContextImpl::new);
 
             }catch (Exception e){
-                Map<String, Object> ret = new HashMap<>();
-                ret.put("message", e.getMessage());
-                return Mono.just(ret);
+                return Mono.error(new CustomException(HttpStatus.BAD_REQUEST, e.getMessage()));
             }
         } else {
             return Mono.empty();

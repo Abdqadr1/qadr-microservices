@@ -20,6 +20,7 @@ public class InnerRouteConfig {
                 .GET("/clients", handler::getAllClients)
                 .GET("/client/name", handler::getClientByName)
                 .POST("/client/create", handler::registerClient)
+                .DELETE("/client/delete/{id}", handler::deleteClient)
                 .GET("/auth", handler::authenticate)
                 .build();
     }
