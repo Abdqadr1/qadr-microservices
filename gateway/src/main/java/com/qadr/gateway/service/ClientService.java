@@ -8,8 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class ClientService implements ReactiveUserDetailsService {
@@ -17,8 +22,20 @@ public class ClientService implements ReactiveUserDetailsService {
     @Autowired
     private ClientRepo clientRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Mono<Client> saveClient(Client client){
-        return clientRepo.save(client);
+        String secret =  generateRandomString();
+        client.setClientSecret(secret);
+        client.setClientSecretSecret(passwordEncoder.encode(secret));
+        return clientRepo.findByClientNameIgnoreCase(client.getClientName())
+                .flatMap(c -> {
+                    if(Objects.nonNull(c))
+                        return Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Client already exists"));
+                    return Mono.just(c);
+                })
+                .then(clientRepo.save(client));
     }
 
     public Mono<Client> findClientById(String id){
@@ -37,6 +54,11 @@ public class ClientService implements ReactiveUserDetailsService {
                 ));
     }
 
+    public Mono<Client> findByName(String name){
+        return clientRepo.findByClientNameIgnoreCase(name)
+                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Client does not exist")));
+    }
+
     public Mono<Void> deleteClientById(String id){
         return findClientById(id)
                 .then(clientRepo.deleteById(id));
@@ -44,8 +66,18 @@ public class ClientService implements ReactiveUserDetailsService {
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        return clientRepo.findByClientNameIgnoreCase(username)
-                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Client does not exist")))
-                .map(ClientDetails::new);
+        return findByName(username).map(ClientDetails::new);
     }
+
+    public Flux<Client> getAllClients(){
+        return clientRepo.findAll();
+    }
+
+    private String generateRandomString(){
+        return UUID.randomUUID().toString()
+                .replace("-", "")
+                .replace("_", "");
+    }
+
+
 }

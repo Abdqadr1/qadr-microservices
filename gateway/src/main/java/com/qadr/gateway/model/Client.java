@@ -1,5 +1,6 @@
 package com.qadr.gateway.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -13,11 +14,13 @@ public class Client {
     @Id
     private String id;
 
-    @Indexed
+    @Indexed(unique = true)
     private String clientName;
 
-    @Indexed
     private String clientSecret;
+
+    @JsonIgnore
+    private String clientSecretSecret;
 
     private List<String> roles;
 }

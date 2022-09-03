@@ -4,16 +4,28 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+@Component
 public class JWTUtil {
-    public static final String KEY = System.getenv("JWT_KEY");
-    private static final Algorithm algorithm = Algorithm.HMAC256(KEY.getBytes());
-    public static String createAccessToken (Authentication auth, String path){
+
+    private Algorithm algorithm;
+
+    public JWTUtil (Environment environment){
+        algorithm = Algorithm.
+                HMAC256(Objects.requireNonNull(environment.getProperty("JWT_KEY")).getBytes());
+    }
+
+
+    public String createAccessToken (Authentication auth, String path){
         return JWT.create()
                 .withSubject((String) auth.getPrincipal())
                 .withIssuer(path)
@@ -24,7 +36,7 @@ public class JWTUtil {
                 .sign(algorithm);
     }
 
-    public static String createRefreshToken (Authentication auth){
+    public String createRefreshToken (Authentication auth){
         return JWT.create()
                 .withSubject((String) auth.getPrincipal())
                 .withIssuedAt(new Date())
@@ -34,7 +46,7 @@ public class JWTUtil {
                 .sign(algorithm);
     }
 
-    public static DecodedJWT verifyToken(String token){
+    public DecodedJWT verifyToken(String token){
         JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token);
     }

@@ -28,6 +28,9 @@ public class SecurityRepository implements ServerSecurityContextRepository {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private JWTUtil jwtUtil;
+
     public static final String TOKEN_PREFIX = "Client ";
 
     @Override
@@ -47,7 +50,7 @@ public class SecurityRepository implements ServerSecurityContextRepository {
         }
         if (accessToken != null) {
             try {
-                DecodedJWT decodedJWT = JWTUtil.verifyToken(accessToken);
+                DecodedJWT decodedJWT = jwtUtil.verifyToken(accessToken);
                 String username = decodedJWT.getSubject();
                 String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                 List<SimpleGrantedAuthority> authorities = Arrays.stream(roles)

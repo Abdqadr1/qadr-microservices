@@ -1,6 +1,5 @@
 package com.qadr.gateway.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +24,12 @@ public class SecurityConfig {
                 .securityContextRepository(securityRepository)
                 .authorizeExchange(exchange ->
                         exchange
-                                .pathMatchers("/client/create").hasAuthority("ADMIN")
+                                .pathMatchers("/client/**", "/clients").hasAuthority("ADMIN")
                                 .pathMatchers("/auth").permitAll()
                                 .pathMatchers("/api/**").permitAll()
         );
         http.csrf().disable();
+        http.formLogin().disable();
         return http.build();
     }
 }

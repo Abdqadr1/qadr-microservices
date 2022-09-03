@@ -23,7 +23,7 @@ public class ClientDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return client.getClientSecret();
+        return client.getClientSecretSecret();
     }
 
     @Override

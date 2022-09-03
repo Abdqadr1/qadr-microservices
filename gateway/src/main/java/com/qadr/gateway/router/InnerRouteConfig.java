@@ -17,7 +17,8 @@ public class InnerRouteConfig {
     @Bean
     public RouterFunction<ServerResponse> routerFunction(){
         return RouterFunctions.route()
-                .GET("/", handler::authenticate)
+                .GET("/clients", handler::getAllClients)
+                .GET("/client/name", handler::getClientByName)
                 .POST("/client/create", handler::registerClient)
                 .GET("/auth", handler::authenticate)
                 .build();

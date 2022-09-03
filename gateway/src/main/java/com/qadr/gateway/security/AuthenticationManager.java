@@ -19,8 +19,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         return Mono.fromSupplier(()-> {
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+            var auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
             return auth;
         });

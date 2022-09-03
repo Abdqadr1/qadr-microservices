@@ -8,7 +8,6 @@ import com.qadr.gateway.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -16,10 +15,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 public class RouteHandler  {
@@ -32,6 +29,9 @@ public class RouteHandler  {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JWTUtil jwtUtil;
+
     public Mono<ServerResponse> authenticate(ServerRequest request){
         String name = request.queryParam("name")
                 .orElseThrow(()-> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
@@ -43,14 +43,17 @@ public class RouteHandler  {
                     if(!passwordEncoder.matches(secret, userDetails.getPassword())){
                         throw new CustomException(HttpStatus.BAD_REQUEST, "Bad Credentials");
                     }
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
-                    return authenticationManager.authenticate(authenticationToken);
+                    var authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails.getUsername(),
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    return authenticationManager.authenticate(authToken);
                 })
                 .flatMap(auth -> {
                     Map<String, String> tokens = new HashMap<>();
-                    tokens.put("access_token", JWTUtil.createAccessToken(auth, "/login"));
-                    tokens.put("refresh_token", JWTUtil.createRefreshToken(auth));
+                    tokens.put("access_token", jwtUtil.createAccessToken(auth, "/auth"));
+                    tokens.put("refresh_token", jwtUtil.createRefreshToken(auth));
                     return  ServerResponse.ok().bodyValue(tokens);
                 });
     }
@@ -62,7 +65,16 @@ public class RouteHandler  {
                 .flatMap(ServerResponse.ok()::bodyValue);
     }
 
+    public Mono<ServerResponse> getAllClients(ServerRequest request){
+        return clientService.getAllClients()
+                .collectList()
+                .flatMap(ServerResponse.ok()::bodyValue);
+    }
 
-
-
+    public Mono<ServerResponse> getClientByName(ServerRequest request){
+        String name = request.queryParam("name")
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
+        return clientService.findByName(name)
+                .flatMap(ServerResponse.ok()::bodyValue);
+    }
 }
