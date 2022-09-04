@@ -41,10 +41,10 @@ spec:
                     name: microservices-configmap
                     key: MYSQLDB_PASSWORD
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-              valueFrom:
-                configMapKeyRef:
-                  name: microservices-configmap
-                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+                valueFrom:
+                  configMapKeyRef:
+                    name: microservices-configmap
+                    key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
 ---
 apiVersion: v1
 kind: Service
