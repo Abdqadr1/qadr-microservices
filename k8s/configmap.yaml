@@ -8,7 +8,7 @@ data:
   MONGODB_URL: mongodb+srv://qadr:qadrabolarinwadiscowale1!@qadr-microservice-clust.hgkoxkh.mongodb.net/clients
 #  MONOGODB_USERNAME: qadr
 #  MONGODB_PASSWORD: qadrabolarinwadiscowale1!
-  MYSQLDB_URL: jdbc:mysql://qadr-microservices-database.c7cywldukjot.us-east-1.rds.amazonaws.com:3306/qadr_micro?zeroDateTimeBehavior=convertToNull
+  MYSQLDB_URL: jdbc:mysql://qadr-databases.c7cywldukjot.us-east-1.rds.amazonaws.com:3306/qadr_micro?zeroDateTimeBehavior=convertToNull
   MYSQLDB_USERNAME: qadr
   MYSQLDB_PASSWORD: qadrabolarinwadiscowale1!
   JWT_KEY: "iahgiohgioaiOIHE*(GYE*YEIOgoirehoijdoishioshisigjisjhgisdhoi"
