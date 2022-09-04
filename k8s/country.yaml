@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: country
-          image: abdqadr/country:latest
+          image: abdqadr/country:2.0
           ports:
             - containerPort: 8081
           env:
