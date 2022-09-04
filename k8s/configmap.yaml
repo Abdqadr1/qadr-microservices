@@ -5,10 +5,10 @@ metadata:
 data:
   SPRING_ZIPKIN_BASEURL: http://zipkin-service:9411/
   EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver-service:8761/eureka/
-  MONGODB_URL: mongodb://localhost:27017/clients
-  MONOGODB_USERNAME: root
-  MONGODB_PASSWORD: password
-  MYSQLDB_URL: jdbc:mysql://localhost:3306/qadr_micro?zeroDateTimeBehavior=convertToNull
-  MYSQLDB_USERNAME: root
-  MYSQLDB_PASSWORD: password
+  MONGODB_URL: mongodb+srv://qadr:qadrabolarinwadiscowale1!@qadr-microservice-clust.hgkoxkh.mongodb.net/clients
+#  MONOGODB_USERNAME: qadr
+#  MONGODB_PASSWORD: qadrabolarinwadiscowale1!
+  MYSQLDB_URL: jdbc:mysql://qadr-microservices-database.c7cywldukjot.us-east-1.rds.amazonaws.com:3306/qadr_micro?zeroDateTimeBehavior=convertToNull
+  MYSQLDB_USERNAME: qadr
+  MYSQLDB_PASSWORD: qadrabolarinwadiscowale1!
   JWT_KEY: "iahgiohgioaiOIHE*(GYE*YEIOgoirehoijdoishioshisigjisjhgisdhoi"

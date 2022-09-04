@@ -30,16 +30,6 @@ spec:
                   configMapKeyRef:
                     name: microservices-configmap
                     key: MONGODB_URL
-            - name: SPRING_DATA_MONOGOBD_USERNAME
-                valueFrom:
-                  configMapKeyRef:
-                    name: microservices-configmap
-                    key: MONOGODB_USERNAME
-            - name: SPRING_DATA_MONOGOBD_PASSWORD
-                valueFrom:
-                  configMapKeyRef:
-                    name: microservices-configmap
-                    key: MONGODB_PASSWORD
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               valueFrom:
                 configMapKeyRef:
