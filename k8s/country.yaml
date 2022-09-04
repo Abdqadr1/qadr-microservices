@@ -26,20 +26,20 @@ spec:
                   name: microservices-configmap
                   key: SPRING_ZIPKIN_BASEURL
             - name: SPRING_DATASOURCE_URL
-                valueFrom:
-                  configMapKeyRef:
-                    name: microservices-configmap
-                    key: MYSQLDB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: microservices-configmap
+                  key: MYSQLDB_URL
             - name: SPRING_DATASOURCE_USERNAME
-                valueFrom:
-                  configMapKeyRef:
-                    name: microservices-configmap
-                    key: MYSQLDB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: microservices-configmap
+                  key: MYSQLDB_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
-                valueFrom:
-                  configMapKeyRef:
-                    name: microservices-configmap
-                    key: MYSQLDB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: microservices-configmap
+                  key: MYSQLDB_PASSWORD
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               valueFrom:
                 configMapKeyRef:

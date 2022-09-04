@@ -26,20 +26,20 @@ spec:
                   name: microservices-configmap
                   key: SPRING_ZIPKIN_BASEURL
             - name: SPRING_DATA_MONOGOBD_URI
-                valueFrom:
-                  configMapKeyRef:
-                    name: microservices-configmap
-                    key: MONGODB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: microservices-configmap
+                  key: MONGODB_URL
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               valueFrom:
                 configMapKeyRef:
                   name: microservices-configmap
                   key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
             - name: JWT_KEY
-                valueFrom:
-                  configMapKeyRef:
-                    name: microservices-configmap
-                    key: JWT_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: microservices-configmap
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
