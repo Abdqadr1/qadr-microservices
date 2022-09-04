@@ -26,7 +26,7 @@ public class SecurityConfig {
                         exchange
                                 .pathMatchers("/client/**", "/clients").hasAuthority("ADMIN")
                                 .pathMatchers("/auth").permitAll()
-                                .pathMatchers("/api/**").permitAll()
+                                .pathMatchers("/api/**").authenticated()
         );
         http.csrf().disable();
         http.formLogin().disable();

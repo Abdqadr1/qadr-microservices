@@ -33,7 +33,7 @@ public class ClientService implements ReactiveUserDetailsService {
                 .flatMap(c -> {
                     if(Objects.nonNull(c))
                         return Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Client already exists"));
-                    return Mono.just(c);
+                    return Mono.empty();
                 })
                 .then(clientRepo.save(client));
     }
