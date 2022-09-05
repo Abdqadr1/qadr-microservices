@@ -25,7 +25,7 @@ spec:
                 configMapKeyRef:
                   name: microservices-configmap
                   key: SPRING_ZIPKIN_BASEURL
-            - name: SPRING_DATA_MONOGOBD_URI
+            - name: SPRING_DATA_MONGODB_URI
               valueFrom:
                 configMapKeyRef:
                   name: microservices-configmap

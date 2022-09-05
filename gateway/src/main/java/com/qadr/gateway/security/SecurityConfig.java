@@ -24,7 +24,9 @@ public class SecurityConfig {
                 .securityContextRepository(securityRepository)
                 .authorizeExchange(exchange ->
                         exchange
-                                .pathMatchers("/client/**", "/clients").hasAuthority("ADMIN")
+                                .pathMatchers("/client/**", "/clients",
+                                        "/api/admin/**", "/api/admin/**")
+                                .hasAuthority("ADMIN")
                                 .pathMatchers("/auth").permitAll()
                                 .pathMatchers("/api/**").authenticated()
         );
