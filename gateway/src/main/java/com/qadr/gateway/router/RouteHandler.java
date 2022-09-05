@@ -5,6 +5,9 @@ import com.qadr.gateway.model.Client;
 import com.qadr.gateway.security.AuthenticationManager;
 import com.qadr.gateway.security.JWTUtil;
 import com.qadr.gateway.service.ClientService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +41,7 @@ public class RouteHandler  {
                 .orElseThrow(()-> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
         String secret = request.queryParam("secret")
                 .orElseThrow(()-> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
+
         return clientService.findByUsername(name)
                 .subscribeOn(Schedulers.parallel())
                 .flatMap(userDetails -> {
@@ -84,5 +88,13 @@ public class RouteHandler  {
                 .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
         return clientService.deleteClientById(id)
                 .then(ServerResponse.ok().build());
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class LoginRequest{
+        private String name;
+        private String secret;
     }
 }
