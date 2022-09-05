@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: bank
-          image: abdqadr/bank:2.0
+          image: abdqadr/bank:3.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 8082
           env:

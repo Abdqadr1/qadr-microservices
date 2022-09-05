@@ -31,6 +31,9 @@ feign:
     alphanumeric-ids:
       enabled: true
 eureka:
+  instance:
+    preferIpAddress: true
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true

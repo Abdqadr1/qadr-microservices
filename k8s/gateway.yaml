@@ -17,6 +17,7 @@ spec:
       containers:
         - name: gateway
           image: abdqadr/gateway:3.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           env:
