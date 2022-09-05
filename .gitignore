@@ -35,3 +35,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+##secret##
+jenkin-server-keypair.pem
+kubeconfig-aug26.txt
+k8s/
+helm/
