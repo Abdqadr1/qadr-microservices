@@ -37,6 +37,11 @@ public class CountryController {
         return countryService.findByName(name);
     }
 
+    @GetMapping("/id/{id}")
+    public Country findCountryByName(@PathVariable Integer id){
+        return countryService.getById(id);
+    }
+
     @DeleteMapping("/admin/delete/{id}")
     public void deleteCountry(@PathVariable Integer id){
         countryService.deleteCountry(id);

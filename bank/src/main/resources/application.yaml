@@ -19,6 +19,8 @@ spring:
         format_sql: true
 management:
   endpoint:
+    health:
+      show-details: always
     shutdown:
       enabled: true
   endpoints:

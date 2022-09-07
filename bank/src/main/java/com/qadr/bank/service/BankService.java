@@ -22,7 +22,7 @@ public class BankService {
         Optional<Bank> bankOptional;
         if(bank.getCode() != null && !bank.getCode().isBlank()){
             List<Bank> banks = bankRepo.findByCode(bank.getCode());
-            if (banks.size() > 0 && banks.stream().anyMatch(b -> b.getId().equals(bank.getId()))) {
+            if (banks.size() > 0 && banks.stream().noneMatch(b -> b.getId().equals(bank.getId()))) {
                 throw new CustomException("Sort code already exists!", HttpStatus.BAD_REQUEST);
             }
         }

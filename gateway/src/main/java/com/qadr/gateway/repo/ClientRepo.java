@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface ClientRepo extends ReactiveMongoRepository<Client, String> {
 
-    Mono<Client> findByClientNameIgnoreCase(String clientName);
+    Mono<Client> findByClientName(String clientName);
 
     Mono<Client> findByClientSecret(String secret);
 

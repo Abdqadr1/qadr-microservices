@@ -13,10 +13,14 @@ public class RouteConfig {
         return builder.routes()
                 .route("path_route", r -> r.path("/get")
                         .uri("http://httpbin.org"))
-//                .route("country", r -> r.path("/country/**")
-//                        .uri("lb://country"))
-//                .route("bank", r -> r.path("/bank/**")
-//                        .uri("lb://bank"))
+                // actuator endpoints
+                .route("country_actuator", r -> r.path("/api/country/actuator/**")
+                        .filters(f -> f.rewritePath("/api/country/actuator/(?<segment>.*)", "/actuator/${segment}"))
+                        .uri("lb://country"))
+                .route("bank_actuator", r -> r.path("/api/bank/actuator/**")
+                        .filters(f -> f.rewritePath("/api/bank/actuator/(?<segment>.*)", "/actuator/${segment}"))
+                        .uri("lb://bank"))
+                //business login endpoints
                 .route("country", r -> r.path("/api/country/**")
                         .filters(f -> f.rewritePath("/api/country/(?<segment>.*)", "/country/${segment}"))
                         .uri("lb://country"))

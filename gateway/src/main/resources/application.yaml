@@ -7,7 +7,7 @@ spring:
   data:
     mongodb:
       auto-index-creation: true
-      uri: mongodb://localhost:27017/clients
+      uri: mongodb://localhost:27017/qadr_mongodb
       username: root
       password: root
   zipkin:

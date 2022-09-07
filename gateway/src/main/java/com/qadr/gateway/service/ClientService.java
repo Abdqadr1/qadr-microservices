@@ -29,7 +29,7 @@ public class ClientService implements ReactiveUserDetailsService {
         String secret =  generateRandomString();
         client.setClientSecret(secret);
         client.setClientSecretSecret(passwordEncoder.encode(secret));
-        return clientRepo.findByClientNameIgnoreCase(client.getClientName())
+        return clientRepo.findByClientName(client.getClientName())
                 .flatMap(c -> {
                     if(Objects.nonNull(c))
                         return Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Client already exists"));
@@ -55,7 +55,7 @@ public class ClientService implements ReactiveUserDetailsService {
     }
 
     public Mono<Client> findByName(String name){
-        return clientRepo.findByClientNameIgnoreCase(name)
+        return clientRepo.findByClientName(name)
                 .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Client does not exist")));
     }
 

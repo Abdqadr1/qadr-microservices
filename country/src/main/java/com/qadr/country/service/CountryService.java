@@ -23,6 +23,7 @@ public record CountryService(CountryRepo countryRepo) {
     }
 
     private void validate(Country country){
+        if(country.getId() == null) return;
         Optional<Country> optional = countryRepo.findByName(country.getName());
         if(optional.isPresent() && !optional.get().getId().equals(country.getId())){
             throw new CustomException("Country name already exists", HttpStatus.BAD_REQUEST);
@@ -37,7 +38,7 @@ public record CountryService(CountryRepo countryRepo) {
 //        }
     }
 
-    private Country getById(Integer id){
+    public Country getById(Integer id){
         return countryRepo.findById(id)
                 .orElseThrow(() -> new CustomException("Could not find country with id " + id, HttpStatus.BAD_REQUEST));
 

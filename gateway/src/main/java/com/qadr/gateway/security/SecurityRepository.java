@@ -61,7 +61,7 @@ public class SecurityRepository implements ServerSecurityContextRepository {
                 return this.authenticationManager.authenticate(auth).map(SecurityContextImpl::new);
 
             }catch (Exception e){
-                return Mono.error(new CustomException(HttpStatus.BAD_REQUEST, e.getMessage()));
+                return Mono.error(new CustomException(HttpStatus.UNAUTHORIZED, e.getMessage()));
             }
         } else {
             return Mono.empty();

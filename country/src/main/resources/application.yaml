@@ -28,6 +28,8 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 management:
   endpoint:
+    health:
+      show-details: always
     shutdown:
       enabled: true
   endpoints:

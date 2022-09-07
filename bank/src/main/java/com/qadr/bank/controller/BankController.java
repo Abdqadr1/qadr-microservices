@@ -5,6 +5,7 @@ import com.qadr.bank.model.Bank;
 import com.qadr.bank.model.Country;
 import com.qadr.bank.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,8 +44,8 @@ public class BankController {
         return countryClient.getCountryByCode(code);
     }
 
-    @PostMapping("/admin/add")
-    public Bank addBank(@RequestBody Bank bank){
+    @PostMapping(value = "/admin/add")
+    public Bank addBank(Bank bank){
         System.out.println(bank);
         return bankService.addBank(bank);
     }

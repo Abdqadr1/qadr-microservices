@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -37,29 +38,29 @@ public class RouteHandler  {
     private JWTUtil jwtUtil;
 
     public Mono<ServerResponse> authenticate(ServerRequest request){
-        String name = request.queryParam("name")
-                .orElseThrow(()-> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
-        String secret = request.queryParam("secret")
-                .orElseThrow(()-> new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)"));
-
-        return clientService.findByUsername(name)
-                .subscribeOn(Schedulers.parallel())
-                .flatMap(userDetails -> {
-                    if(!passwordEncoder.matches(secret, userDetails.getPassword())){
-                        throw new CustomException(HttpStatus.BAD_REQUEST, "Bad Credentials");
-                    }
-                    var authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails.getUsername(),
-                            null,
-                            userDetails.getAuthorities()
-                    );
-                    return authenticationManager.authenticate(authToken);
-                })
-                .flatMap(auth -> {
+        return request.bodyToMono(LoginRequest.class)
+                .flatMap(loginRequest -> {
+                    if( loginRequest.getSecret() == null || loginRequest.getName() == null
+                        || loginRequest.getSecret().isBlank() || loginRequest.getName().isBlank()
+                    )
+                        throw new CustomException(HttpStatus.BAD_REQUEST, "Incomplete parameter(s)");
+                    return clientService.findByUsername(loginRequest.getName())
+                            .flatMap(userDetails -> {
+                                if(!passwordEncoder.matches(loginRequest.getSecret(), userDetails.getPassword())){
+                                    throw new CustomException(HttpStatus.BAD_REQUEST, "Bad Credentials");
+                                }
+                                var authToken = new UsernamePasswordAuthenticationToken(
+                                        userDetails.getUsername(),
+                                        null,
+                                        userDetails.getAuthorities()
+                                );
+                                return authenticationManager.authenticate(authToken);
+                            }).subscribeOn(Schedulers.parallel());
+                }).flatMap(auth -> {
                     Map<String, String> tokens = new HashMap<>();
                     tokens.put("access_token", jwtUtil.createAccessToken(auth, "/auth"));
                     tokens.put("refresh_token", jwtUtil.createRefreshToken(auth));
-                    return  ServerResponse.ok().bodyValue(tokens);
+                    return  ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(tokens);
                 });
     }
 
