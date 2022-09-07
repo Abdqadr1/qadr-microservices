@@ -38,5 +38,6 @@ spec:
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 8761
+      port: 443
       targetPort: 8761
+      name: http
